@@ -992,13 +992,16 @@ int64_t GetProofOfWorkReward(int64_t nFees)
     return nSubsidy + nFees;
 }
 
-const int DAILY_BLOCKCOUNT =  2880;
+const int DAILY_BLOCKCOUNT = 1440;
+const int YEARLY_BLOCKCOUNT = DAILY_BLOCKCOUNT * 365;
 // miner's coin stake reward based on coin age spent (coin-days)
 int64_t GetProofOfStakeReward(int64_t nCoinAge, int64_t nFees)
 {
     int64_t nRewardCoinYear;
+    	nRewardCoinYear = MAX_MINT_PROOF_OF_STAKE / 10;
 
-    nRewardCoinYear = MAX_MINT_PROOF_OF_STAKE;
+	if(pindexBest->nHeight < YEARLY_BLOCKCOUNT)
+		nRewardCoinYear = MAX_MINT_PROOF_OF_STAKE;
 
     int64_t nSubsidy = nCoinAge * nRewardCoinYear / 365 / COIN;
 
